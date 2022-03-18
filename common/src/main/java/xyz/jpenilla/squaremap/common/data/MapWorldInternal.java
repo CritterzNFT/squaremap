@@ -181,7 +181,8 @@ public abstract class MapWorldInternal implements MapWorld {
             return;
         }
         final BackgroundRender render = new BackgroundRender(this);
-        this.backgroundRender = this.executor.scheduleAtFixedRate(render, this.config().BACKGROUND_RENDER_INTERVAL_SECONDS, this.config().BACKGROUND_RENDER_INTERVAL_SECONDS, TimeUnit.SECONDS);
+        int interval = this.config().BACKGROUND_RENDER_INTERVAL_SECONDS * 1000;
+        this.backgroundRender = this.executor.scheduleAtFixedRate(render, (long) (interval + Math.random() * interval), (long) (interval + Math.random() * interval / 10.0), TimeUnit.MILLISECONDS);
     }
 
     private void stopBackgroundRender() {
