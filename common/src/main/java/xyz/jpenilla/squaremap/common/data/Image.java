@@ -2,6 +2,7 @@ package xyz.jpenilla.squaremap.common.data;
 
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
@@ -104,7 +105,12 @@ public final class Image {
                         writer.write(null, new IIOImage(image, null, null), param);
                     }
                 } else {
-                    ImageIO.write(image, "png", file.toFile());
+                    File temp = new File(dir.toFile(), "." + file.toFile().getName() + ".tmp");
+                    ImageIO.write(image, "png", temp);
+                    if (!temp.renameTo(file.toFile())) {
+                        file.toFile().delete();
+                        temp.renameTo(file.toFile());
+                    }
                 }
             } catch (final IOException ex) {
                 Logging.logger().error(this.replaceXZ(Lang.LOG_COULD_NOT_SAVE_REGION), ex);
