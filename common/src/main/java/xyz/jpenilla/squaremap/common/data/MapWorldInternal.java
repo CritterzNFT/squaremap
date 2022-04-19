@@ -267,9 +267,10 @@ public abstract class MapWorldInternal implements MapWorld {
             return;
         }
         final BackgroundRender render = this.renderFactory.createBackgroundRender(this);
+        int interval = this.config().BACKGROUND_RENDER_INTERVAL_SECONDS * 1000; // Critterz
         this.backgroundRender = Pair.of(
             render,
-            this.executor.scheduleAtFixedRate(render, this.config().BACKGROUND_RENDER_INTERVAL_SECONDS, this.config().BACKGROUND_RENDER_INTERVAL_SECONDS, TimeUnit.SECONDS)
+            this.executor.scheduleAtFixedRate(render, (long) (interval + Math.random() * interval), (long) (interval + Math.random() * interval / 10.0), TimeUnit.MILLISECONDS) // Critterz - Add a random interval to offset the render threads of multiple servers
         );
     }
 
